@@ -1,1 +1,1 @@
-# Advent of - Day 01 2021
+# Advent of Max — Day01 2021
