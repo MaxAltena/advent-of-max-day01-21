@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
+
+@font-face {
+  font-family: "Bebas Neue";
+  src: url("/fonts/bebasneue-book-webfont.woff") format("woff"),
+    url("/fonts/bebasneue-book-webfont.woff2") format("woff2");
+}
+
+:root {
+  --font-primary: "Bebas Neue", sans-serif;
+  --font-secondary: "Montserrat", sans-serif;
+  --background-h: 250deg;
+  --background-s: 7%;
+  --background-l: 18%;
+  --background: hsl(
+    var(--background-h) var(--background-s) var(--background-l)
+  );
+  --foreground: #ffffff;
+  --red: #9d0000;
+  --green: #00aa51;
+
+  --shadow-color: 0deg 0% 0%;
+  --shadow-elevation-high: 0px 0px 0px hsl(var(--shadow-color) / 0.81),
+    0.2px 0px 0.2px -2.5px hsl(var(--shadow-color) / 0.54),
+    1.3px 0.1px 1px -5px hsl(var(--shadow-color) / 0.27);
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-secondary);
+}
