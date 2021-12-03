@@ -3,27 +3,31 @@
   import { zeroPad } from "./utils";
 
   const onMinuteInput = (event: any) => {
-    const { valueAsNumber } = event.target;
+    const { valueAsNumber, value } = event.target;
+
+    if (valueAsNumber === NaN || value === "") {
+      return;
+    }
 
     const currentSeconds = $timeLeft % 60;
     const nextMinutes = valueAsNumber * 60;
     const nextLeft = currentSeconds + nextMinutes;
 
-    timeLeft.update((currentTimeLeft) =>
-      nextLeft > currentTimeLeft ? currentTimeLeft : nextLeft
-    );
+    timeLeft.set(nextLeft);
   };
 
   const onSecondInput = (event: any) => {
-    const { valueAsNumber } = event.target;
+    const { valueAsNumber, value } = event.target;
+
+    if (valueAsNumber === NaN || value === "") {
+      return;
+    }
 
     const currentMinutes = Math.floor($timeLeft / 60);
     const nextSeconds = valueAsNumber;
     const nextLeft = currentMinutes * 60 + nextSeconds;
 
-    timeLeft.update((currentTimeLeft) =>
-      nextLeft > currentTimeLeft ? currentTimeLeft : nextLeft
-    );
+    timeLeft.set(nextLeft);
   };
 
   $: timeLeftInMinutes = () => zeroPad(Math.floor($timeLeft / 60));

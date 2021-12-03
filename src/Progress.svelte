@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { timeLeft, timeLimit, timerElement } from "./store";
+  import { timeLeft, tweenedTimeLeft, timeLimit, timerElement } from "./store";
   import { PI } from "./constants";
 
-  $: timeFraction = () => $timeLeft / $timeLimit;
+  $: timeFraction = () => $tweenedTimeLeft / $timeLimit;
   $: isComplete = () => $timeLeft <= 0;
   $: strokeDasharray = () => {
     const elementDiameter = ($timerElement.width + $timerElement.height) / 2;

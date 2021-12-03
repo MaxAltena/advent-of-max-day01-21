@@ -1,4 +1,4 @@
-import { readable, writable } from "svelte/store";
+import { readable, writable, get } from "svelte/store";
 import { SECONDS } from "./constants";
 import { tweened } from "svelte/motion";
 import { linear } from "svelte/easing";
@@ -14,26 +14,42 @@ export const timerElement = writable({
 });
 export const timeLimit = readable(SECONDS * duration);
 export const timePassed = writable(0);
-export const timeLeft = tweened(SECONDS * duration, {
+export const timeLeft = writable(SECONDS * duration);
+export const tweenedTimeLeft = tweened(get(timeLeft), {
   duration: 1000,
   easing: linear,
 });
 
+const completeTimer = async () => {
+  const audio = new Audio("/sounds/alert.mp3");
+  await audio.play();
+
+  alert("Time is up!");
+};
+
 timeLeft.subscribe((timeLeft) => {
   isTimerRunning.update((newIsTimerRunning) => {
     if (timeLeft <= 0 && newIsTimerRunning) {
-      alert("Time is up!");
+      completeTimer();
 
       return false;
     }
 
     return newIsTimerRunning;
   });
+
+  console.log(timeLeft);
+
+  tweenedTimeLeft.set(timeLeft);
 });
 
 isTimerRunning.subscribe((newIsTimerRunning) => {
   if (newIsTimerRunning) {
     isEditing.set(false);
+
+    if (get(timeLeft) <= 0) {
+      return;
+    }
 
     timerObject.update((value) =>
       setInterval(() => {
