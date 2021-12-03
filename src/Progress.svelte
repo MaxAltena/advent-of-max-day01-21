@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { time, timerElement } from "./store";
+  import { timeLeft, timeLimit, timerElement } from "./store";
   import { PI } from "./constants";
 
-  $: timeFraction = () => $time.left / $time.limit;
-  $: isComplete = () => $time.left <= 0;
+  $: timeFraction = () => $timeLeft / $timeLimit;
+  $: isComplete = () => $timeLeft <= 0;
   $: strokeDasharray = () => {
     const elementDiameter = ($timerElement.width + $timerElement.height) / 2;
     const elementDiameterMinusStrokeWidth = elementDiameter - 10;
@@ -48,7 +48,7 @@
     stroke: var(--green);
     stroke-width: 10px;
     r: calc(50% - calc(10px / 2));
-    transition: stroke-dasharray 1s linear, opacity 500ms ease-in-out;
+    transition: opacity 500ms ease-in-out;
     stroke-linecap: round;
     transform: rotate(90deg);
     transform-origin: center;

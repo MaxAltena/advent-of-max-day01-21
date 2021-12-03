@@ -1,35 +1,33 @@
 <script lang="ts">
-  import { isEditing, time, timerElement } from "./store";
+  import { isEditing, timeLeft, timerElement } from "./store";
   import { zeroPad } from "./utils";
 
   const onMinuteInput = (event: any) => {
     const { valueAsNumber } = event.target;
 
-    const currentSeconds = $time.left % 60;
+    const currentSeconds = $timeLeft % 60;
     const nextMinutes = valueAsNumber * 60;
     const nextLeft = currentSeconds + nextMinutes;
 
-    time.update((currentTime) => ({
-      ...currentTime,
-      left: nextLeft > currentTime.limit ? currentTime.limit : nextLeft,
-    }));
+    timeLeft.update((currentTimeLeft) =>
+      nextLeft > currentTimeLeft ? currentTimeLeft : nextLeft
+    );
   };
 
   const onSecondInput = (event: any) => {
     const { valueAsNumber } = event.target;
 
-    const currentMinutes = Math.floor($time.left / 60);
+    const currentMinutes = Math.floor($timeLeft / 60);
     const nextSeconds = valueAsNumber;
-    const nextLeft = (currentMinutes * 60) + nextSeconds;
+    const nextLeft = currentMinutes * 60 + nextSeconds;
 
-    time.update((currentTime) => ({
-      ...currentTime,
-      left: nextLeft > currentTime.limit ? currentTime.limit : nextLeft,
-    }));
+    timeLeft.update((currentTimeLeft) =>
+      nextLeft > currentTimeLeft ? currentTimeLeft : nextLeft
+    );
   };
 
-  $: timeLeftInMinutes = () => zeroPad(Math.floor($time.left / 60));
-  $: timeLeftInSeconds = () => zeroPad($time.left % 60);
+  $: timeLeftInMinutes = () => zeroPad(Math.floor($timeLeft / 60));
+  $: timeLeftInSeconds = () => zeroPad(Math.floor($timeLeft % 60));
 </script>
 
 <div class="time">

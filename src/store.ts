@@ -1,5 +1,7 @@
-import { writable } from "svelte/store";
+import { readable, writable } from "svelte/store";
 import { SECONDS } from "./constants";
+import { tweened } from "svelte/motion";
+import { linear } from "svelte/easing";
 
 const duration = 25; // in minutes
 const timerObject = writable(undefined);
@@ -10,15 +12,16 @@ export const timerElement = writable({
   width: undefined,
   height: undefined,
 });
-export const time = writable({
-  limit: SECONDS * duration,
-  passed: 0,
-  left: SECONDS * duration,
+export const timeLimit = readable(SECONDS * duration);
+export const timePassed = writable(0);
+export const timeLeft = tweened(SECONDS * duration, {
+  duration: 1000,
+  easing: linear,
 });
 
-time.subscribe((newTime) => {
+timeLeft.subscribe((timeLeft) => {
   isTimerRunning.update((newIsTimerRunning) => {
-    if (newTime.left <= 0 && newIsTimerRunning) {
+    if (timeLeft <= 0 && newIsTimerRunning) {
       alert("Time is up!");
 
       return false;
@@ -34,11 +37,8 @@ isTimerRunning.subscribe((newIsTimerRunning) => {
 
     timerObject.update((value) =>
       setInterval(() => {
-        time.update((_time) => ({
-          ..._time,
-          passed: _time.passed + 1,
-          left: _time.left - 1,
-        }));
+        timeLeft.update((timeLeft) => timeLeft - 1);
+        timePassed.update((timePassed) => timePassed + 1);
       }, 1000)
     );
   } else {

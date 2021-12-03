@@ -1,24 +1,43 @@
 <script lang="ts">
   import { isEditing, isTimerRunning } from "./store";
+  import { crossfade } from "svelte/transition";
+  import { sineInOut } from "svelte/easing";
+
+  const [send, receive] = crossfade({
+    duration: 500,
+    easing: sineInOut,
+  });
 </script>
 
 <div class="actions">
   {#if $isTimerRunning}
-    <button on:click={() => isTimerRunning.set(false)} class="stop">Stop</button
+    <button
+      in:send={{ key: "stop" }}
+      out:receive={{ key: "start" }}
+      on:click={() => isTimerRunning.set(false)}
+      class="stop">Stop</button
     >
   {:else}
-    <button on:click={() => isTimerRunning.set(true)} class="start"
-      >Start</button
+    <button
+      in:send={{ key: "start" }}
+      out:receive={{ key: "stop" }}
+      on:click={() => isTimerRunning.set(true)}
+      class="start">Start</button
     >
   {/if}
 
-  <button class="settings" on:click={() => isEditing.set(!$isEditing)} data-is-editing={$isEditing}>
+  <button
+    class="settings"
+    on:click={() => isEditing.set(!$isEditing)}
+    data-is-editing={$isEditing}
+  >
     <img src="images/gear.svg" alt="Settings" />
   </button>
 </div>
 
 <style>
   .actions {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -39,6 +58,8 @@
 
   .start,
   .stop {
+    bottom: 10px;
+    position: absolute;
     color: var(--foreground);
     text-transform: uppercase;
     font-size: 1rem;
@@ -48,6 +69,10 @@
   }
 
   .settings {
+    position: absolute;
+    top: 10px;
+    width: 40px;
+    height: 40px;
     display: grid;
     place-items: center;
   }
@@ -62,10 +87,10 @@
   }
 
   .settings:not(:hover) img {
-    opacity: 0.5;
+    opacity: 0.4;
   }
 
-  .settings:not(:hover) img {
-    opacity: 0.75;
+  .settings[data-is-editing="true"] img {
+    opacity: 0.8;
   }
 </style>
