@@ -2,8 +2,8 @@
 
 @font-face {
   font-family: "Bebas Neue";
-  src: url("/fonts/bebasneue-book-webfont.woff") format("woff"),
-    url("/fonts/bebasneue-book-webfont.woff2") format("woff2");
+  src: url("/fonts/bebasneue-book.woff") format("woff"),
+    url("/fonts/bebasneue-book.woff2") format("woff2");
 }
 
 :root {
@@ -15,9 +15,9 @@
   --background: hsl(
     var(--background-h) var(--background-s) var(--background-l)
   );
-  --foreground: #ffffff;
-  --red: #9d0000;
-  --green: #00aa51;
+  --foreground: #FFFFFF;
+  --red: #9D0000;
+  --green: #00AA51;
 
   --shadow-color: 0deg 0% 0%;
   --shadow-elevation-high: 0px 0px 0px hsl(var(--shadow-color) / 0.81),
